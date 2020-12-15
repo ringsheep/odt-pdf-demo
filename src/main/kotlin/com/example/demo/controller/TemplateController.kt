@@ -19,8 +19,8 @@ class TemplateController {
 
     @PostMapping("/pdf")
     fun generatePdf(@RequestBody content: Map<String, Any>) : String {
-        val template = DemoApplication::class.java.getResourceAsStream("file-list.odt")!!
-        val routeSheet = XDocReportRegistry.getRegistry().loadReport(template, TemplateEngineKind.Velocity)
+        val template = DemoApplication::class.java.getResourceAsStream(content["fileName"].toString())!!
+        val routeSheet = XDocReportRegistry.getRegistry().loadReport(template, TemplateEngineKind.Freemarker)
         val options = Options.getTo(ConverterTypeTo.PDF).via(ConverterTypeVia.ODFDOM)
         val context = routeSheet.createContext(content)
         ByteArrayOutputStream().use { os ->
